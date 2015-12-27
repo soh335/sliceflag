@@ -3,6 +3,7 @@ package sliceflag
 import (
 	"flag"
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -35,6 +36,38 @@ func (d *durationSliceValue) String() string {
 
 func (d *durationSliceValue) Get() interface{} {
 	return *d.p
+}
+
+type float64SliceValue struct {
+	p     *[]float64
+	seted bool
+}
+
+func newFloat64SliceValue(val []float64, p *[]float64) *float64SliceValue {
+	*p = append(*p, val...)
+	return &float64SliceValue{p, false}
+}
+
+func (f *float64SliceValue) Set(value string) error {
+	v, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return err
+	}
+	// has some default values and clear its.
+	if f.seted == false && len(*f.p) > 0 {
+		*f.p = (*f.p)[:0]
+	}
+	*f.p = append(*f.p, v)
+	f.seted = true
+	return nil
+}
+
+func (f *float64SliceValue) String() string {
+	return fmt.Sprintf("%v", *f.p)
+}
+
+func (f *float64SliceValue) Get() interface{} {
+	return *f.p
 }
 
 type stringSliceValue struct {
@@ -73,6 +106,16 @@ func Duration(flagset *flag.FlagSet, name string, value []time.Duration, usage s
 
 func DurationVar(flagset *flag.FlagSet, p *[]time.Duration, name string, value []time.Duration, usage string) {
 	flagset.Var(newDurationSliceValue(value, p), name, usage)
+}
+
+func Float64(flagset *flag.FlagSet, name string, value []float64, usage string) *[]float64 {
+	p := new([]float64)
+	Float64Var(flagset, p, name, value, usage)
+	return p
+}
+
+func Float64Var(flagset *flag.FlagSet, p *[]float64, name string, value []float64, usage string) {
+	flagset.Var(newFloat64SliceValue(value, p), name, usage)
 }
 
 func String(flagset *flag.FlagSet, name string, value []string, usage string) *[]string {
