@@ -46,4 +46,8 @@ func TestString(t *testing.T) {
 `, b.String(); e != g {
 		t.Errorf("defaults expected %v got %v", e, g)
 	}
+
+	if e, g := []string{"aaa", "bbb"}, flagset.Lookup("string1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
+		t.Errorf("string1 lookup expected %v got %v", e, g)
+	}
 }
