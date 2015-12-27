@@ -23,6 +23,10 @@ func TestAll(t *testing.T) {
 	intFlag2 := Int(flagset, "int2", []int{10}, "int2 value")
 	intFlag3 := Int(flagset, "int3", []int{20}, "int3 value")
 
+	int64Flag1 := Int64(flagset, "int64_1", []int64{}, "int64_1 value")
+	int64Flag2 := Int64(flagset, "int64_2", []int64{10}, "int64_2 value")
+	int64Flag3 := Int64(flagset, "int64_3", []int64{20}, "int64_3 value")
+
 	stringFlag1 := String(flagset, "string1", []string{}, "string1 value")
 	stringFlag2 := String(flagset, "string2", []string{"ddd"}, "string2 value")
 	stringFlag3 := String(flagset, "string3", []string{"eee"}, "string3 value")
@@ -43,6 +47,10 @@ func TestAll(t *testing.T) {
 		"-int1", "10",
 		"-int1", "20",
 		"-int2", "30",
+
+		"-int64_1", "10",
+		"-int64_1", "20",
+		"-int64_2", "30",
 	}
 
 	if err := flagset.Parse(args); err != nil {
@@ -92,6 +100,16 @@ func TestAll(t *testing.T) {
 		t.Errorf("intFlag3 expected %v got %v", e, g)
 	}
 
+	if e, g := []int64{10, 20}, *int64Flag1; !reflect.DeepEqual(e, g) {
+		t.Errorf("int64Flag1 expected %v got %v", e, g)
+	}
+	if e, g := []int64{30}, *int64Flag2; !reflect.DeepEqual(e, g) {
+		t.Errorf("int64Flag2 expected %v got %v", e, g)
+	}
+	if e, g := []int64{20}, *int64Flag3; !reflect.DeepEqual(e, g) {
+		t.Errorf("int64Flag3 expected %v got %v", e, g)
+	}
+
 	var b bytes.Buffer
 	flagset.SetOutput(&b)
 	flagset.PrintDefaults()
@@ -114,6 +132,12 @@ func TestAll(t *testing.T) {
     	int2 value (default [10])
   -int3 value
     	int3 value (default [20])
+  -int64_1 value
+    	int64_1 value (default [])
+  -int64_2 value
+    	int64_2 value (default [10])
+  -int64_3 value
+    	int64_3 value (default [20])
   -string1 value
     	string1 value (default [])
   -string2 value

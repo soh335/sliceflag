@@ -105,6 +105,39 @@ func (i *intSliceValue) Get() interface{} {
 	return *i.p
 }
 
+// -- int64 slice value
+type int64SliceValue struct {
+	p     *[]int64
+	seted bool
+}
+
+func newInt64SliceVlaue(val []int64, p *[]int64) *int64SliceValue {
+	*p = append(*p, val...)
+	return &int64SliceValue{p, false}
+}
+
+func (i *int64SliceValue) Set(value string) error {
+	v, err := strconv.ParseInt(value, 0, 64)
+	if err != nil {
+		return err
+	}
+	// has some default values and clear its.
+	if i.seted == false && len(*i.p) > 0 {
+		*i.p = (*i.p)[:0]
+	}
+	*i.p = append(*i.p, v)
+	i.seted = true
+	return nil
+}
+
+func (i *int64SliceValue) String() string {
+	return fmt.Sprintf("%v", *i.p)
+}
+
+func (i *int64SliceValue) Get() interface{} {
+	return *i.p
+}
+
 // -- string slice value
 type stringSliceValue struct {
 	p     *[]string
@@ -162,6 +195,16 @@ func Int(flagset *flag.FlagSet, name string, value []int, usage string) *[]int {
 
 func IntVar(flagset *flag.FlagSet, p *[]int, name string, value []int, usage string) {
 	flagset.Var(newIntSliceVlaue(value, p), name, usage)
+}
+
+func Int64(flagset *flag.FlagSet, name string, value []int64, usage string) *[]int64 {
+	p := new([]int64)
+	Int64Var(flagset, p, name, value, usage)
+	return p
+}
+
+func Int64Var(flagset *flag.FlagSet, p *[]int64, name string, value []int64, usage string) {
+	flagset.Var(newInt64SliceVlaue(value, p), name, usage)
 }
 
 func String(flagset *flag.FlagSet, name string, value []string, usage string) *[]string {
