@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// -- duration slice value
 type durationSliceValue struct {
 	p     *[]time.Duration
 	seted bool
@@ -38,6 +39,7 @@ func (d *durationSliceValue) Get() interface{} {
 	return *d.p
 }
 
+// -- float64 slice value
 type float64SliceValue struct {
 	p     *[]float64
 	seted bool
@@ -70,6 +72,7 @@ func (f *float64SliceValue) Get() interface{} {
 	return *f.p
 }
 
+// -- string slice value
 type stringSliceValue struct {
 	p     *[]string
 	seted bool
