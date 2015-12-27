@@ -218,3 +218,26 @@ func TestAll(t *testing.T) {
 		t.Errorf("uint64_1 lookup expected %v got %v", e, g)
 	}
 }
+
+func TestParseFailed(t *testing.T) {
+	var b bytes.Buffer
+
+	flagset := flag.NewFlagSet("test", flag.ContinueOnError)
+	flagset.SetOutput(&b)
+	_ = Int(flagset, "int1", []int{}, "int1 value")
+	args := []string{
+		"-int1", "aaa",
+	}
+	err := flagset.Parse(args)
+	if err == nil {
+		t.Fatal("should err")
+	}
+
+	if e, g := `invalid value "aaa" for flag -int1: strconv.ParseInt: parsing "aaa": invalid syntax
+Usage of test:
+  -int1 value
+    	int1 value (default [])
+`, b.String(); e != g {
+		t.Errorf("output expected %v got %v", e, g)
+	}
+}
