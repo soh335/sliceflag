@@ -25,6 +25,10 @@ $ go run main.go --str aaa --str bbb
 
 * [flag - The Go Programming Language](https://golang.org/pkg/flag/)
 
+## TODO
+
+* write document
+
 ## LICENSE
 
 * MIT
