@@ -17,6 +17,10 @@ func main() {
 }
 ```
 
+```
+$ go run main.go --str aaa --str bbb
+```
+
 ## SEEALSO
 
 * [flag - The Go Programming Language](https://golang.org/pkg/flag/)
