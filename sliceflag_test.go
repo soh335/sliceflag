@@ -199,7 +199,22 @@ func TestAll(t *testing.T) {
 	if e, g := []time.Duration{time.Second, time.Second * 10}, flagset.Lookup("duration1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
 		t.Errorf("duration1 lookup expected %v got %v", e, g)
 	}
+	if e, g := []float64{10, 20}, flagset.Lookup("float1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
+		t.Errorf("float1 lookup expected %v got %v", e, g)
+	}
+	if e, g := []int{10, 20}, flagset.Lookup("int1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
+		t.Errorf("int1 lookup expected %v got %v", e, g)
+	}
+	if e, g := []int64{10, 20}, flagset.Lookup("int64_1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
+		t.Errorf("int64_1 lookup expected %v got %v", e, g)
+	}
 	if e, g := []string{"aaa", "bbb"}, flagset.Lookup("string1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
 		t.Errorf("string1 lookup expected %v got %v", e, g)
+	}
+	if e, g := []uint{10, 20}, flagset.Lookup("uint1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
+		t.Errorf("uint1 lookup expected %v got %v", e, g)
+	}
+	if e, g := []uint64{10, 20}, flagset.Lookup("uint64_1").Value.(flag.Getter).Get(); !reflect.DeepEqual(e, g) {
+		t.Errorf("uint64_1 lookup expected %v got %v", e, g)
 	}
 }
