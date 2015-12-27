@@ -1,6 +1,7 @@
 package sliceflag
 
 import (
+	"bytes"
 	"flag"
 	"reflect"
 	"testing"
@@ -30,5 +31,19 @@ func TestString(t *testing.T) {
 	}
 	if e, g := []string{"eee"}, *stringFlag3; !reflect.DeepEqual(e, g) {
 		t.Errorf("stringFlag3 expected %v got %v", e, g)
+	}
+
+	var b bytes.Buffer
+	flagset.SetOutput(&b)
+	flagset.PrintDefaults()
+
+	if e, g := `  -string1 value
+    	string1 value (default [])
+  -string2 value
+    	string2 value (default [ddd])
+  -string3 value
+    	string3 value (default [eee])
+`, b.String(); e != g {
+		t.Errorf("defaults expected %v got %v", e, g)
 	}
 }
