@@ -138,6 +138,72 @@ func (i *int64SliceValue) Get() interface{} {
 	return *i.p
 }
 
+// -- uint slice value
+type uintSliceValue struct {
+	p     *[]uint
+	seted bool
+}
+
+func newUintSliceVlaue(val []uint, p *[]uint) *uintSliceValue {
+	*p = append(*p, val...)
+	return &uintSliceValue{p, false}
+}
+
+func (u *uintSliceValue) Set(value string) error {
+	v, err := strconv.ParseUint(value, 0, 64)
+	if err != nil {
+		return err
+	}
+	// has some default values and clear its.
+	if u.seted == false && len(*u.p) > 0 {
+		*u.p = (*u.p)[:0]
+	}
+	*u.p = append(*u.p, uint(v))
+	u.seted = true
+	return nil
+}
+
+func (u *uintSliceValue) String() string {
+	return fmt.Sprintf("%v", *u.p)
+}
+
+func (u *uintSliceValue) Get() interface{} {
+	return *u.p
+}
+
+// -- uint64 slice value
+type uint64SliceValue struct {
+	p     *[]uint64
+	seted bool
+}
+
+func newUint64SliceVlaue(val []uint64, p *[]uint64) *uint64SliceValue {
+	*p = append(*p, val...)
+	return &uint64SliceValue{p, false}
+}
+
+func (u *uint64SliceValue) Set(value string) error {
+	v, err := strconv.ParseUint(value, 0, 64)
+	if err != nil {
+		return err
+	}
+	// has some default values and clear its.
+	if u.seted == false && len(*u.p) > 0 {
+		*u.p = (*u.p)[:0]
+	}
+	*u.p = append(*u.p, v)
+	u.seted = true
+	return nil
+}
+
+func (u *uint64SliceValue) String() string {
+	return fmt.Sprintf("%v", *u.p)
+}
+
+func (u *uint64SliceValue) Get() interface{} {
+	return *u.p
+}
+
 // -- string slice value
 type stringSliceValue struct {
 	p     *[]string
@@ -205,6 +271,26 @@ func Int64(flagset *flag.FlagSet, name string, value []int64, usage string) *[]i
 
 func Int64Var(flagset *flag.FlagSet, p *[]int64, name string, value []int64, usage string) {
 	flagset.Var(newInt64SliceVlaue(value, p), name, usage)
+}
+
+func Uint(flagset *flag.FlagSet, name string, value []uint, usage string) *[]uint {
+	p := new([]uint)
+	UintVar(flagset, p, name, value, usage)
+	return p
+}
+
+func UintVar(flagset *flag.FlagSet, p *[]uint, name string, value []uint, usage string) {
+	flagset.Var(newUintSliceVlaue(value, p), name, usage)
+}
+
+func Uint64(flagset *flag.FlagSet, name string, value []uint64, usage string) *[]uint64 {
+	p := new([]uint64)
+	Uint64Var(flagset, p, name, value, usage)
+	return p
+}
+
+func Uint64Var(flagset *flag.FlagSet, p *[]uint64, name string, value []uint64, usage string) {
+	flagset.Var(newUint64SliceVlaue(value, p), name, usage)
 }
 
 func String(flagset *flag.FlagSet, name string, value []string, usage string) *[]string {

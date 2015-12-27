@@ -27,6 +27,14 @@ func TestAll(t *testing.T) {
 	int64Flag2 := Int64(flagset, "int64_2", []int64{10}, "int64_2 value")
 	int64Flag3 := Int64(flagset, "int64_3", []int64{20}, "int64_3 value")
 
+	uintFlag1 := Uint(flagset, "uint1", []uint{}, "uint1 value")
+	uintFlag2 := Uint(flagset, "uint2", []uint{10}, "uint2 value")
+	uintFlag3 := Uint(flagset, "uint3", []uint{20}, "uint3 value")
+
+	uint64Flag1 := Uint64(flagset, "uint64_1", []uint64{}, "uint64_1 value")
+	uint64Flag2 := Uint64(flagset, "uint64_2", []uint64{10}, "uint64_2 value")
+	uint64Flag3 := Uint64(flagset, "uint64_3", []uint64{20}, "uint64_3 value")
+
 	stringFlag1 := String(flagset, "string1", []string{}, "string1 value")
 	stringFlag2 := String(flagset, "string2", []string{"ddd"}, "string2 value")
 	stringFlag3 := String(flagset, "string3", []string{"eee"}, "string3 value")
@@ -51,6 +59,14 @@ func TestAll(t *testing.T) {
 		"-int64_1", "10",
 		"-int64_1", "20",
 		"-int64_2", "30",
+
+		"-uint1", "10",
+		"-uint1", "20",
+		"-uint2", "30",
+
+		"-uint64_1", "10",
+		"-uint64_1", "20",
+		"-uint64_2", "30",
 	}
 
 	if err := flagset.Parse(args); err != nil {
@@ -110,6 +126,26 @@ func TestAll(t *testing.T) {
 		t.Errorf("int64Flag3 expected %v got %v", e, g)
 	}
 
+	if e, g := []uint{10, 20}, *uintFlag1; !reflect.DeepEqual(e, g) {
+		t.Errorf("uintFlag1 expected %v got %v", e, g)
+	}
+	if e, g := []uint{30}, *uintFlag2; !reflect.DeepEqual(e, g) {
+		t.Errorf("uintFlag2 expected %v got %v", e, g)
+	}
+	if e, g := []uint{20}, *uintFlag3; !reflect.DeepEqual(e, g) {
+		t.Errorf("uintFlag3 expected %v got %v", e, g)
+	}
+
+	if e, g := []uint64{10, 20}, *uint64Flag1; !reflect.DeepEqual(e, g) {
+		t.Errorf("uint64Flag1 expected %v got %v", e, g)
+	}
+	if e, g := []uint64{30}, *uint64Flag2; !reflect.DeepEqual(e, g) {
+		t.Errorf("uint64Flag2 expected %v got %v", e, g)
+	}
+	if e, g := []uint64{20}, *uint64Flag3; !reflect.DeepEqual(e, g) {
+		t.Errorf("uint64Flag3 expected %v got %v", e, g)
+	}
+
 	var b bytes.Buffer
 	flagset.SetOutput(&b)
 	flagset.PrintDefaults()
@@ -144,6 +180,18 @@ func TestAll(t *testing.T) {
     	string2 value (default [ddd])
   -string3 value
     	string3 value (default [eee])
+  -uint1 value
+    	uint1 value (default [])
+  -uint2 value
+    	uint2 value (default [10])
+  -uint3 value
+    	uint3 value (default [20])
+  -uint64_1 value
+    	uint64_1 value (default [])
+  -uint64_2 value
+    	uint64_2 value (default [10])
+  -uint64_3 value
+    	uint64_3 value (default [20])
 `, b.String(); e != g {
 		t.Errorf("defaults expected %v got %v", e, g)
 	}
