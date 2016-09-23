@@ -151,43 +151,43 @@ func TestAll(t *testing.T) {
 	flagset.PrintDefaults()
 
 	if e, g := `  -duration1 value
-    	duration1 value (default [])
+    	duration1 value
   -duration2 value
     	duration2 value (default [1s])
   -duration3 value
     	duration3 value (default [1m0s])
   -float1 value
-    	float1 value (default [])
+    	float1 value
   -float2 value
     	float2 value (default [10])
   -float3 value
     	float3 value (default [20])
   -int1 value
-    	int1 value (default [])
+    	int1 value
   -int2 value
     	int2 value (default [10])
   -int3 value
     	int3 value (default [20])
   -int64_1 value
-    	int64_1 value (default [])
+    	int64_1 value
   -int64_2 value
     	int64_2 value (default [10])
   -int64_3 value
     	int64_3 value (default [20])
   -string1 value
-    	string1 value (default [])
+    	string1 value
   -string2 value
     	string2 value (default [ddd])
   -string3 value
     	string3 value (default [eee])
   -uint1 value
-    	uint1 value (default [])
+    	uint1 value
   -uint2 value
     	uint2 value (default [10])
   -uint3 value
     	uint3 value (default [20])
   -uint64_1 value
-    	uint64_1 value (default [])
+    	uint64_1 value
   -uint64_2 value
     	uint64_2 value (default [10])
   -uint64_3 value
@@ -236,7 +236,7 @@ func TestParseFailed(t *testing.T) {
 	if e, g := `invalid value "aaa" for flag -int1: strconv.ParseInt: parsing "aaa": invalid syntax
 Usage of test:
   -int1 value
-    	int1 value (default [])
+    	int1 value
 `, b.String(); e != g {
 		t.Errorf("output expected %v got %v", e, g)
 	}

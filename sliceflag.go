@@ -3,6 +3,7 @@ package sliceflag
 import (
 	"flag"
 	"fmt"
+	"reflect"
 	"strconv"
 	"time"
 )
@@ -32,7 +33,7 @@ func (d *durationSliceValue) Set(value string) error {
 }
 
 func (d *durationSliceValue) String() string {
-	return fmt.Sprintf("%v", *d.p)
+	return sliceString(d.p)
 }
 
 func (d *durationSliceValue) Get() interface{} {
@@ -65,7 +66,7 @@ func (f *float64SliceValue) Set(value string) error {
 }
 
 func (f *float64SliceValue) String() string {
-	return fmt.Sprintf("%v", *f.p)
+	return sliceString(f.p)
 }
 
 func (f *float64SliceValue) Get() interface{} {
@@ -98,7 +99,7 @@ func (i *intSliceValue) Set(value string) error {
 }
 
 func (i *intSliceValue) String() string {
-	return fmt.Sprintf("%v", *i.p)
+	return sliceString(i.p)
 }
 
 func (i *intSliceValue) Get() interface{} {
@@ -131,7 +132,7 @@ func (i *int64SliceValue) Set(value string) error {
 }
 
 func (i *int64SliceValue) String() string {
-	return fmt.Sprintf("%v", *i.p)
+	return sliceString(i.p)
 }
 
 func (i *int64SliceValue) Get() interface{} {
@@ -164,7 +165,7 @@ func (u *uintSliceValue) Set(value string) error {
 }
 
 func (u *uintSliceValue) String() string {
-	return fmt.Sprintf("%v", *u.p)
+	return sliceString(u.p)
 }
 
 func (u *uintSliceValue) Get() interface{} {
@@ -197,7 +198,7 @@ func (u *uint64SliceValue) Set(value string) error {
 }
 
 func (u *uint64SliceValue) String() string {
-	return fmt.Sprintf("%v", *u.p)
+	return sliceString(u.p)
 }
 
 func (u *uint64SliceValue) Get() interface{} {
@@ -226,7 +227,7 @@ func (s *stringSliceValue) Set(value string) error {
 }
 
 func (s *stringSliceValue) String() string {
-	return fmt.Sprintf("%v", *s.p)
+	return sliceString(s.p)
 }
 
 func (s *stringSliceValue) Get() interface{} {
@@ -301,4 +302,13 @@ func String(flagset *flag.FlagSet, name string, value []string, usage string) *[
 
 func StringVar(flagset *flag.FlagSet, p *[]string, name string, value []string, usage string) {
 	flagset.Var(newStringSliceValue(value, p), name, usage)
+}
+
+func sliceString(v interface{}) string {
+	rv := reflect.ValueOf(v)
+	if rv.IsNil() {
+		return "[]"
+	} else {
+		return fmt.Sprintf("%v", rv.Elem())
+	}
 }
